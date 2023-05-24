@@ -12,6 +12,8 @@
 6-Utilize ENUMs para a definição do gênero (tipo da música que toca):
 Exemplo: enum genero{ rock=1,samba=2,reggae=3,....}; */
 
+// teste versão 2
+
 
 enum genero {rock=1,samba=2,reggae=3,pagode=4,heavymetal=5,funk=6,jazz=7};
 
