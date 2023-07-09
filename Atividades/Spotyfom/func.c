@@ -111,12 +111,18 @@ struct nodo *buscaMusica(struct desc_acervo *descritor, int criterio) {
 
 struct nodo *buscaCodigo(struct nodo *auxiliar, int code) {
 
+    struct nodo *aux = NULL;
+
     while(auxiliar != NULL) {
 
-    if(auxiliar->info->codigo == code) return auxiliar;
+    if(auxiliar->info->codigo == code) {
+        aux = auxiliar;
+        }
     auxiliar = auxiliar->prox;
 
     }
+
+        return aux;
 
 }
 
@@ -207,32 +213,55 @@ struct desc_Fila *criaPlaylistFila(struct desc_acervo *descritor) {
     return fila;
 }
 
+struct desc_acervo *inserePilha(struct desc_acervo *pilha, struct nodo *musica) {
+
+    struct nodo *aux = NULL;
+
+    if(pilha->acervo == NULL) {
+        pilha->acervo = musica;
+        pilha->acervo->prox = NULL;
+        pilha->tamanho++;
+
+        return pilha;
+    }
+
+    else {
+//    aux = pilha->acervo;
+    musica->prox = pilha->acervo;
+    pilha->acervo = musica;
+    pilha->tamanho++;
+
+    return pilha;
+    }
+
+}
+
 struct desc_acervo *criaPilha(struct desc_acervo *descritor) { // ARRUMAR ESSA FUNÇÃO AQUI
 
     struct desc_acervo *pilha = NULL;
-    struct nodo *aux = NULL, *copia = NULL, *auxiliar;
+    struct nodo *aux = NULL, *copia = NULL, *auxiliar = NULL;
     int codigo;
 
     aux = (struct nodo *) malloc (sizeof(struct nodo));
+    copia = (struct nodo *) malloc (sizeof(struct nodo));
 
     auxiliar = descritor->acervo;
     pilha = criaAcervo();
 
-    printf("Diga o código da música que você deseja inserir (-1 para sair): ");
-
-
     do{
 
+    printf("Diga o código da música que você deseja inserir (-1 para sair): ");
     scanf("%d", &codigo);
     if(codigo != -1) {
 
         aux = buscaCodigo(auxiliar,codigo);
         copia->info = aux->info;
         copia->prox = NULL;
-        insereMusica(pilha, aux); // insere como se fosse uma lista normal
+        pilha = inserePilha(pilha, copia); 
+    //    imprimeMusicas(pilha->acervo); erro está aqui.
     }
 
-    }while(codigo != -1);
+    } while(codigo != -1);
 
     return pilha;
 }
@@ -246,5 +275,71 @@ void imprimeMusicas(struct nodo *musicas) {
     mostraMusica(aux);
     aux = aux->prox;
     }
+
+}
+
+void playListFila(struct desc_acervo *descritor, struct desc_Fila *fila) {
+
+    int seletor=0;
+
+    printf("[1] Play\n[2] Stop\nOpção: ");
+    scanf("%d", &seletor);
+    do {
+    deQueue(fila);
+    scanf("%d", &seletor);
+    }while(seletor != 2);
+
+}
+
+void deQueue(struct desc_Fila *fila) {
+
+    struct nodo *aux = NULL, *anterior = NULL;
+
+    aux = fila->tail;
+
+    if(fila->tamanho == 1) {
+        fila->head = NULL;
+        fila->tail = NULL;
+        fila->tamanho--;
+    }
+
+    else {
+        
+        while(aux->prox != NULL) {
+            anterior = aux;
+            aux = aux->prox;
+        }
+
+        anterior->prox = NULL;
+        fila->head = anterior;
+        fila->tamanho--;
+        free(aux);
+    }
+
+}
+
+void playlistPilha(struct desc_acervo *descritor, struct desc_acervo *pilha) {
+
+    int seletor=0;
+
+    printf("[1] Play\n[2] Stop\nOpção: ");
+    scanf("%d", &seletor);
+    do {
+    popPilha(pilha);
+    scanf("%d", &seletor);
+    }while(seletor != 2);
+
+}
+
+void popPilha(struct desc_acervo *pilha) {
+
+    struct nodo *aux = NULL, *anterior = NULL;
+
+    anterior = pilha->acervo;
+    aux = anterior->prox;
+    pilha->acervo = aux;
+    free(anterior);
+    pilha->tamanho--;
+
 
 }

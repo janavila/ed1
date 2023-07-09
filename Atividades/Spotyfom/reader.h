@@ -35,8 +35,12 @@ void mostraMusica(struct nodo *musica); // okay
 struct desc_Fila *criaPlaylistFila(struct desc_acervo *descritor); // ok
 void insereFila(struct desc_Fila *descritorFila, struct nodo *musica); // ok
 struct desc_acervo *criaPilha(struct desc_acervo *descritor); // ARRUMAR ESSA FUNÇÃO.
+struct desc_acervo *inserePilha(struct desc_acervo *pilha, struct nodo *musica); // ARRUMAR ESSA FUNÇÃO.
 void imprimeMusicas(struct nodo *musicas); // okay
-
+void playListFila(struct desc_acervo *descritor, struct desc_Fila *fila); // okay
+void deQueue(struct desc_Fila *fila); // okay 
+void playlistPilha(struct desc_acervo *descritor, struct desc_acervo *pilha);
+void popPilha(struct desc_acervo *pilha); 
 
 
 // execuçao

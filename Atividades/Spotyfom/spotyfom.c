@@ -44,7 +44,7 @@ int main(void){
 // =====================================================================================================================================
 	}
 
-	printf("======MENU======\n1) Execução\n2) Playlist\n3) Busca\n4) Impressão\n5) Relatório (Opcional)\n6) Sair");
+	printf("======MENU======\n1) Execução\n2) Playlist\n3) Busca\n4) Impressão\n5) Sair");
 	do{
 
 	printf("\nEscolha a opção: ");
@@ -52,6 +52,11 @@ int main(void){
 
 	switch(seletor) {
 		case 1:
+		printf("==Você deseja escutar qual playlist==\n1) Aleatória [Fila]\n2) Pessoal [Pilha]\nOpção: ");
+		scanf("%d", &criterio);
+		if(criterio == 1 && aleatorioFila != NULL) playListFila(descritor, aleatorioFila);
+		else if(criterio == 2 && pilha != NULL) playlistPilha(descritor,pilha); // IMPLEMENTAR
+		else printf("Opção invalida ou a playlist não foi criada!\n");
 		break;
 
 
@@ -82,15 +87,12 @@ int main(void){
 		printf("==Você deseja imprimir==\n1) Acervo\n2) Fila\n3) Pilha\nOpção: ");
 		scanf("%d", &criterio);
 		if(criterio == 1) imprimeMusicas(descritor->acervo);
-		else if (criterio == 2) imprimeMusicas(aleatorioFila->tail);
-		else if (criterio == 3) imprimeMusicas(pilha->acervo);
-		else printf("Opção inexistente!\n");
+		else if (criterio == 2 && aleatorioFila != NULL) imprimeMusicas(aleatorioFila->tail);
+		else if (criterio == 3 && pilha != NULL) imprimeMusicas(pilha->acervo);
+		else printf("Opção inexistente ou playlist não criada!\n");
 		break;
 		
 		case 5:
-		break;
-
-		case 6:
 		printf("Obrigado por utilizar!!\n");
 		break;
 
@@ -100,7 +102,7 @@ int main(void){
 
 	}
 	
-	}while(seletor != 6);
+	}while(seletor != 5);
 
 return 0;
 
